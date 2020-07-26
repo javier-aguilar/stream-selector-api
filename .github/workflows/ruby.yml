@@ -15,13 +15,13 @@ on:
 
 jobs:
   test:
+    runs-on: ubuntu-latest
+    
     services:
       postgres:
-        ports:
-          - 5432/tcp
-
-    runs-on: ubuntu-latest
-
+        ports: 
+           - 5432/tcp
+   
     steps:
     - uses: actions/checkout@v2
     - name: Set up Ruby
