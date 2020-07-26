@@ -2,11 +2,20 @@ require 'kimurai'
 require './app/poros/album.rb'
 
 class BandcampService < Kimurai::Base
-  @@list = []
-
   def self.wishlist(username)
     response = scrape(username)
     @@list if response
+  end
+
+  def self.scrape(username)
+    @name = 'bandcamp_spider'
+    @engine = :mechanize
+    @start_urls = ["https://bandcamp.com/#{username}/wishlist"]
+    @config = {
+      skip_request_errors: [{ error: RuntimeError, message: '404 => Net::HTTPNotFound' }]
+    }
+    @@list = []
+    BandcampService.crawl!
   end
 
   def parse(response, url:, data: {})
@@ -16,18 +25,4 @@ class BandcampService < Kimurai::Base
       @@list << Album.new(artist, title)
     end
   end
-
-  private
-
-  def self.scrape(username)
-    @name = "bandcamp_spider"
-    @engine = :mechanize
-    @start_urls = ["https://bandcamp.com/#{username}/wishlist"]
-    @config =  {
-      skip_request_errors: [{ error: RuntimeError, message: "404 => Net::HTTPNotFound" }]
-    }
-    @@list = []
-    self.crawl!
-  end
-
 end
