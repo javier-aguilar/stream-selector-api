@@ -41,6 +41,7 @@ jobs:
       env:
         PGHOST: localhost
         PGUSER: postgres
+        PGPASSWORD: postgres
         RAILS_ENV: test
       run: |
         gem install bundler
@@ -50,6 +51,7 @@ jobs:
       env:
         PGHOST: localhost
         PGUSER: postgres
+        PGPASSWORD: postgres
         RAILS_ENV: test
       run: |
         bundle exec rspec
