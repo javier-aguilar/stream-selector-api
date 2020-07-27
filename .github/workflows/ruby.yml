@@ -15,19 +15,8 @@ on:
 
 jobs:
   test:
+
     runs-on: ubuntu-latest
-    
-    services:
-      postgres:
-        image: postgres:12.3
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: postgres
-        ports: 
-          - 5432:5432
-        # needed because the postgres container does not provide a healthcheck
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
     - uses: actions/checkout@v2
@@ -40,7 +29,5 @@ jobs:
         ruby-version: 2.5.3
     - name: Install dependencies
       run: bundle install
-    - name: Create & Migrate DB
-      run: bundle exec rails db:{create,migrate} RAILS_ENV=test
     - name: Run tests
       run: bundle exec rake
